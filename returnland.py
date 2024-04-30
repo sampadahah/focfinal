@@ -1,5 +1,6 @@
 from read import read
-from operations import display,calculate_total_amount
+
+from operations import display
 from rent import find_selected_land
 from write import write_return_bill
 
@@ -8,6 +9,7 @@ from write import write_return_bill
 #         if row[0] == kitta_no:
 #             return row
 
+return_invoice=[]
 
 def returnLand():
         while True:
@@ -21,9 +23,7 @@ def returnLand():
                         break
                 
         data=read()
-        land_info=[]
         returning=True
-        ultimate_total=0
 
         while returning:
                 display() 
@@ -37,27 +37,30 @@ def returnLand():
                                 months_late=(return_duration-rental_duration)
                                 fine=500*months_late
                                 print(f"Since you've returned this land late you're fined Rs.{fine}")
-                                total_amount, vat_amount, final_amount,fine= calculate_total_amount( int(returning_land_info[4]), rental_duration)
-                                ultimate_total += final_amount  # Update ultimate total
+                               
+                                location=returning_land_info[1] 
+                                direction=returning_land_info[2]     
+                                anna=returning_land_info[3]
+                                price=returning_land_info[4]*rental_duration
 
-                                land_info.append(([returning_land_info[0]],[f"{returning_land_info[1]}, {returning_land_info[2]}"],[rental_duration],([total_amount], vat_amount, final_amount,fine),))
-                                write_return_bill(customer_name, phone_number, address, land_info, ultimate_total,returning_land_info,rental_duration)
-                        
+                                return_invoice.append([location,direction,anna,price])
+                               
                         else:
                                 print("Returned the land in time without fine added!")
 
-                                while True:
-                                        choice = input("Do you want to return another land? (Y/N): ").upper()
-                                        if choice == "N":
-                                                # write_return_bill(customer_name, phone_number, address, land_info, ultimate_total,returning_land_info,rental_duration)
-                                                print( f"Your bill has been issued and saved in {customer_name}.txt. Thank you!")
-                                                returning=False
+                        while True:
+                                choice = input("Do you want to return another land? (Y/N): ").upper()
+                                if choice == "N":
+                                        write_return_bill(customer_name, phone_number, address, return_invoice,returning_land_info,rental_duration,fine)
+                                        print( f"Your bill has been issued and saved in {customer_name}.txt. Thank you!")
+                                                
+                                        returning=False
                                 
-                                        elif choice=="Y":
-                                                break
+                                elif choice=="Y":
+                                        break
 
-                                        else:
-                                                print("Invalid. Please enter 'Y' or 'N; !")
+                                else:
+                                        print("Invalid. Please enter 'Y' or 'N; !")
 
 
                         # else:

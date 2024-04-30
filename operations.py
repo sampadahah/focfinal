@@ -1,5 +1,6 @@
 import os
 from read import read
+
 def display():
     # it reads data from  the text file
     data = read()
@@ -14,8 +15,6 @@ def display():
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear') # Remove the content from the console screen
 
-def calculate_total_amount(price, rent_duration,fine):
-    total_amount = price * rent_duration
-    vat_amount = 0.15 * total_amount
-    final_amount = total_amount + vat_amount+fine
-    return total_amount, vat_amount, final_amount,fine
+
+
+

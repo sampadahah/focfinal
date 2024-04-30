@@ -1,16 +1,15 @@
 from datetime import datetime
 
-
-def write_rent_bill(customer_name, phone_number, address, land_info, ultimate_total):
+def write_rent_bill(kitta_no,customer_name, phone_number, address, rent_invoice,rent_duration):
     rental_date = datetime.now().strftime("%Y-%m-%d")
-    rent_bill_file = open( f"Rented By {customer_name}.txt","w") 
-    # for info in land_info:
-    #     kitta_no, locations, rent_duration, price= info
-    #     total_price, total_vat, final_amount = price
+    total_amount=0
+    for x in rent_invoice:  
+          total_amount += sum(map(int, x[3].split()))  #calculating the total amount by summing the net price of each land in the invoice.
+    vat_amount=total_amount*0.15
+    final_amount=total_amount+vat_amount
 
-
-    # with open(f"Rented By {customer_name}.txt", "w") as rent_bill_file:
-    rent_bill_file.write( f"""
+   
+    bill_top=( f"""
 
                                                              Techno Property Nepal
                                                              Malepatan-5, Pokhara
@@ -24,59 +23,31 @@ def write_rent_bill(customer_name, phone_number, address, land_info, ultimate_to
                             Kitta No.  | City/District  | Land Faced     | Anna         | Rental Duration    | Price        |
                             -------------------------------------------------------------------------------------------------""")
     
-    for info in land_info:
-        kitta_no, city, land_faced, anna, rent_duration, price= info
-        total_price, total_vat, final_amount = price
+    
+    for i in rent_invoice:
 
-        rent_bill_file.write(f"""{kitta_no}|{city}|{land_faced}|{anna}|{[rent_duration]}| Rs.{price}""")
+        bill_middle=(f"""   
+                            {kitta_no} |     {i[0]}     |     {i[1]}     |    {i[2]}    |{rent_duration}months| Rs.{i[3]}   |""")
 
-        rent_bill_file.write(f"""-------------------------------------------------------------------------------------
+    bill_bottom=(f"""      
+                            -------------------------------------------------------------------------------------------------
 
-                         Total Amount:{total_price}
-                         VAT(15%):{total_vat}
-                         Total Amount with VAT:{final_amount}
-                         Total amount for all selected land:{ultimate_total}
+                                                                                                    Total Amount:{total_amount}
+                                                                                                    VAT(15%):{vat_amount}
+                                                                                                    Total Amount with VAT:{final_amount}
 
-                         -------------------------------------------------------------------------------------""")
+                            -------------------------------------------------------------------------------------------------""")
         
-        
-        
+
+    rent_bill=bill_top+bill_middle+bill_bottom
+    print(rent_bill)
+    rent_file=open(f"Rented By {customer_name}.txt","w")
+    rent_file.write(rent_bill)
     
 
-
-        # rent_bill_file.write("Rental Bill\n\n")
-        # rent_bill_file.write(f"Date and Time: {date_time}\n")
-        # rent_bill_file.write(f"Customer Name: {username}\n")
-        # rent_bill_file.write(f"Phone Number: {phone_number}\n")
-        # rent_bill_file.write(f"Address: {address}\n")
-
-        # bill_file.write("\nVenue Details\n")
-        # for info in venues_info:
-        #     kitta_no, locations, rental_periods, prices = info
-        #     total_price, total_vat, final_amount = prices
-
-        #     bill_file.write(f"Kitta No.: {', '.join(kitta_no)}\n")
-        #     bill_file.write(f"Location: {', '.join(locations)}\n")
-        #     bill_file.write(
-        #         f"Rental Period: {', '.join(str(period) for period in rental_periods)} months\n"
-        #     )
-        #     bill_file.write(
-        #         f"Price (excluding VAT): Rs.{', '.join(str(price) for price in total_price)}\n"
-        #     )
-        #     bill_file.write(f"VAT (15%): Rs.{total_vat}\n")
-        #     bill_file.write(f"Final Amount (including VAT): Rs.{final_amount}\n")
-        #     bill_file.write("\n")
-
-        # bill_file.write(
-        #     f"Ultimate Total (including VAT) for all venues: Rs.{ultimate_total}\n"
-        # )
-
-
-write_rent_bill()
-def write_return_bill(customer_name, phone_number, address,months_late, land_info, ultimate_total,selected_land_info,rent_duration):
+def write_return_bill(customer_name, phone_number, address,months_late, return_invoice,selected_land_info,rent_duration):
     return_date=datetime.now().strftime("%Y-%m-%d")
-    kitta_no, locations, rent_duration, amount = land_info
-    total_price, total_vat, final_amount,fine = amount
+    
 
 
     # with open(f"Rented By {customer_name}.txt", "w") as rent_bill_file:
@@ -94,24 +65,26 @@ def write_return_bill(customer_name, phone_number, address,months_late, land_inf
                         Kitta No.  | City/District  | Land Faced     | Anna         | Rental Duration    | Price        |
                         -------------------------------------------------------------------------------------------------"""
                        
-    billMiddle=f"""{kitta_no}|{locations}|{selected_land_info[2]}|{selected_land_info[3]}|{[rent_duration]}| {selected_land_info[4]}"""
+    billMiddle=f"""
+                        {kitta_no} |{locations}|{selected_land_info[2]}|{selected_land_info[3]}|{[rent_duration]}| {selected_land_info[4]}"""
 
-    billButtom = f"""-------------------------------------------------------------------------------------
+    billButtom = f"""-------------------------------------------------------------------------------------------------
 
-                         Fined Months:{months_late}
-                         Fine Amount:{fine}
-                         Total Amount:{total_price}
-                         VAT(15%):{total_vat}
-                         Total Amount with VAT:{final_amount}
-                         Total amount for all returned land:{ultimate_total}
+                                                                                Fined Months:{months_late}
+                                                                                Fine Amount:{fine}
+                                                                                Total Amount:{total_price}
+                                                                                VAT(15%):{total_vat}
+                                                                                Total Amount with VAT:{final_amount}
+                                                                                Total amount for all returned land:{ultimate_total}
 
-                         -------------------------------------------------------------------------------------"""
+                         -----------------------------------------------------------------------------------------------"""
         
-    bill=billTop+billMiddle+billButtom
+    return_bill=billTop+billMiddle+billButtom
+    print(return_bill)
 
     return_file=open(f"Returned By {customer_name}.txt","w")
-    return_file.write(bill)
-    return_file.close()
+    return_file.write(return_bill)
+    
 
 
 

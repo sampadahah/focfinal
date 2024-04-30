@@ -14,3 +14,4 @@ def read():
         print(f"Error: File not found!")
         
     return data
+
