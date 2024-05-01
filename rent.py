@@ -73,8 +73,7 @@ def rentLand():
                                 
 
                         rent_invoice.append([kitta_no,location,direction,anna,price])
-                        print(rent_invoice)
-                        
+                        update(selected_land_info)
                         while True:
                                 choice = input("Do you want to rent another land? (Y/N): ").upper()
                                 if choice=="Y":
@@ -83,7 +82,6 @@ def rentLand():
                                 elif choice == "N":
                                         rent=False   #setting 'rent' to false to exit the outer loop
                                         print( f"Your bill has been issued and saved in Rented By {customer_name}.txt. Thank you!")
-                                        update(selected_land_info)
                                         write_rent_bill(kitta_no,customer_name, phone_number, address,rent_invoice,rent_duration) 
                                         break
 
