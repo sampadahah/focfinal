@@ -3,30 +3,38 @@ from write import write_rent_bill
 from read import read
 
 
-rent_invoice= []    #creating an empty list to store rent invoice information
+
 def find_selected_land(data, kitta_no):
     for row in data:
         if row[0] == kitta_no:
             return row
 
-# def update(selected_land_info):
-#        file=open('land.txt','r')
-#        replaced=selected_land_info[-1].replace("Available","Not Available")
-#        file.close()
 
-#        file=open('land.txt','r')
-#        file.writelines(replaced)
-#        file.close()
+def update(selected_land_info):
+    file=open('land.txt', 'r') # Open the file in read mode
+    lines = file.readlines() # Read all the lines
+
+    #to change the availability status of the rented land
+    for i, line in enumerate(lines):     #enumerating to get both index and content of each line in the list
+        if line.startswith(selected_land_info[0]):
+            lines[i] = line.replace("Available", "Not Available")   # replacing "Available" with "Not Available" for the user rented land
+
+    with open('land.txt', 'w') as file:   # opening the file in write mode
+        file.writelines(lines)  # writing the modified lines back to the file
+
+    
+    return read()  # returning the updated data
 
 
 
 
 def rentLand():
+        rent_invoice= []    #creating an empty list to store rent invoice information
         while True:
                 customer_name = input("Enter your name: ")
                 address = input("Enter your address: ")
                 phone_number = int(input("Enter your phone number: "))
-
+                customer_name,address=customer_name.title(),address.title()   #capitalizing first letter of each word
                 if not customer_name.strip() or not phone_number or not address.strip():
                         print("Please provide valid customer name, phone number, and address.")  # Print an error message if any field is empty
                 else:
@@ -42,7 +50,7 @@ def rentLand():
                 kitta_no = input("Enter the kitta no. of the land you would like to rent: ")
                 selected_land_info = find_selected_land(data, kitta_no)
 
-                if selected_land_info[-1].strip() == " Not Available":
+                if selected_land_info[-1].strip() == "Not Available":
                         print("This land is not available. Please choose another one.")
                         
                 else:
@@ -61,10 +69,10 @@ def rentLand():
                         location=selected_land_info[1] 
                         direction=selected_land_info[2]     
                         anna=selected_land_info[3]
-                        price=selected_land_info[4]*rent_duration
+                        price=int(selected_land_info[4])*rent_duration
                                 
 
-                        rent_invoice.append([location,direction,anna,price])
+                        rent_invoice.append([kitta_no,location,direction,anna,price])
                         print(rent_invoice)
                         
                         while True:
@@ -74,27 +82,18 @@ def rentLand():
 
                                 elif choice == "N":
                                         rent=False   #setting 'rent' to false to exit the outer loop
-                                        print( f"Your bill has been issued and saved in {customer_name}.txt. Thank you!")
+                                        print( f"Your bill has been issued and saved in Rented By {customer_name}.txt. Thank you!")
+                                        update(selected_land_info)
                                         write_rent_bill(kitta_no,customer_name, phone_number, address,rent_invoice,rent_duration) 
                                         break
 
                                 else:
-                                        print("Invalid. Please enter 'Y' or 'N; !")
+                                        print("Invalid. Please enter 'Y' or 'N' !")
                                                         
-        # return kitta_no, selected_land_info,rent_duration
 
 
 
 
-        # if any(
-        #     row[0] == kitta_no for row in data[0:]):  # Check if kitta_no exists in data
-        #     selected_land_info =row for row in data if row[0] == kitta_no
-        #     if selected_land_info[-1].strip() == "Not Available":
-        #         print("This selected_land_info is not available. Please choose another one.")
-        #     else:
-        #         return kitta_no, selected_land_info
-        # else:
-        #     print("Invalid kitta no. Please enter a valid kitta number.")
 
 
     
@@ -102,7 +101,6 @@ def rentLand():
    
 
 
-    # #return customer_name, phone_number, address
 
 
 

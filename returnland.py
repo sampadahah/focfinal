@@ -31,17 +31,17 @@ def returnLand():
                 returning_land_info=find_selected_land(data,kitta_no)
 
                 if returning_land_info[-1].strip()=="Not Available":
-                        rental_duration=int(input("Enter the period you've rented this land for(in months):"))
+                        rent_duration=int(input("Enter the period you've rented this land for(in months):"))
                         return_duration=int(input("Enter the period you're returning this land after(in months):"))
-                        if (return_duration>rental_duration):
-                                months_late=(return_duration-rental_duration)
+                        if (return_duration>rent_duration):
+                                months_late=(return_duration-rent_duration)
                                 fine=500*months_late
                                 print(f"Since you've returned this land late you're fined Rs.{fine}")
                                
                                 location=returning_land_info[1] 
                                 direction=returning_land_info[2]     
                                 anna=returning_land_info[3]
-                                price=returning_land_info[4]*rental_duration
+                                price=returning_land_info[4]*rent_duration
 
                                 return_invoice.append([location,direction,anna,price])
                                
@@ -50,14 +50,12 @@ def returnLand():
 
                         while True:
                                 choice = input("Do you want to return another land? (Y/N): ").upper()
-                                if choice == "N":
-                                        write_return_bill(customer_name, phone_number, address, return_invoice,returning_land_info,rental_duration,fine)
+                                if choice=="Y":
+                                        break   #exiting the inner loop and continuing with the returning process
+                                elif choice == "N":
+                                        returning=False   #setting 'returning' to false to exit the outer loop
                                         print( f"Your bill has been issued and saved in {customer_name}.txt. Thank you!")
-                                                
-                                        returning=False
-                                
-                                elif choice=="Y":
-                                        break
+                                        write_return_bill(customer_name, phone_number, address, return_invoice,rent_duration,fine)
 
                                 else:
                                         print("Invalid. Please enter 'Y' or 'N; !")
