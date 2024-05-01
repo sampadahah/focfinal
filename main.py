@@ -1,4 +1,4 @@
-from operations import display
+from operations import display,clear
 from rent import rentLand
 from returnland import returnLand
 def main():
@@ -31,25 +31,28 @@ def main():
                                                             ║  4 ║    Exit                             ║
                                                             ╚════╩═════════════════════════════════════╝
                 """)
-            # try:
-            user_choice =int(input("Select any option from the above table: "))
+            try:
+                user_choice =int(input("Select any option from the above table: "))
+                    
+                if user_choice == 1:
+                    display()#Calling the display function
                 
-            if user_choice == 1:
-                display()#Calling the display function
-            
-            elif user_choice == 2:
-                rentLand()#Calling the rent funtion from rent_land
+                elif user_choice == 2:
+                    clear()
+                    rentLand()#Calling the rent funtion from rent_land
 
-            elif user_choice== 3:
-                returnLand()#Calling the return function from return_land
-                
-            elif user_choice == 4:
-                print("""
-                                                                            ＴＨＡＮＫ ＹＯＵ ！""") 
-                break   # Exit the loop and terminate the program
-            else:
-                print("Choose number between 1 to 4 from the above table only.") 
-            # except:
-                # print("Please enter integer only!")    
+                elif user_choice== 3:
+                    clear()
+                    returnLand()#Calling the return function from return_land
+                    
+                elif user_choice == 4:
+                    clear()
+                    print("""
+                                                                                ＴＨＡＮＫ ＹＯＵ ！""") 
+                    break   # Exit the loop and terminate the program
+                else:
+                    print("Choose number between 1 to 4 from the above table only.") 
+            except:
+                print("Please enter integer only!")    
            
 main() #calling the main function in order to start the program 

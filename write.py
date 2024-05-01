@@ -15,8 +15,8 @@ def write_rent_bill(kitta_no,customer_name, phone_number, address, rent_invoice,
                                                                   Techno Property Nepal                                       
                                                                   Malepatan-5, Pokhara
                             ------------------------------------------------------------------------------------------------
-                            Name:{customer_name}                                                             Rental Date:{rental_date}                        
-                            Contact Number:{phone_number}                                                    Rental Time:{rental_time}
+                            Name:{customer_name}                                                    Rental Date:{rental_date}                        
+                            Contact Number:{phone_number}                                           Rental Time:{rental_time}
                             Address:{address}
                             ------------------------------------------------------------------------------------------------
                                Kitta No.  |  City/District  |   Land Faced   |   Anna   |  Rental Duration  |    Price     |
@@ -38,7 +38,7 @@ def write_rent_bill(kitta_no,customer_name, phone_number, address, rent_invoice,
 
     bill_bottom=(f"""      
                             ------------------------------------------------------------------------------------------------
-                                                                                         Total Amount:{total_amount}
+                                                                                         Total Amount:{float(total_amount)}
                                                                                          VAT(13%):{vat_amount}
                                                                                          Total Amount with VAT:{final_amount}
                             ------------------------------------------------------------------------------------------------""")
@@ -59,10 +59,7 @@ def write_return_bill(kitta_no,customer_name, phone_number, address, return_invo
     for x in return_invoice:  
           total_amount += int(x[4])+fine #calculating the total amount by summing the net price of each land in the invoice.
     vat_amount=total_amount*0.13
-    if fine:
-        final_amount=total_amount+vat_amount+fine
-    else:
-        final_amount=total_amount+vat_amount
+    final_amount=total_amount+vat_amount+fine
 
 
 
@@ -71,8 +68,8 @@ def write_return_bill(kitta_no,customer_name, phone_number, address, return_invo
                                                                   Techno Property Nepal                                       
                                                                   Malepatan-5, Pokhara
                             ------------------------------------------------------------------------------------------------
-                            Name:{customer_name}                                                             Rental Date:{return_date}                        
-                            Contact Number:{phone_number}                                                    Rental Time:{return_time}
+                            Name:{customer_name}                                                   Rental Date:{return_date}                        
+                            Contact Number:{phone_number}                                          Rental Time:{return_time}
                             Address:{address}
                             ------------------------------------------------------------------------------------------------
                                Kitta No.  |  City/District  |   Land Faced   |   Anna   |  Rental Duration  |    Price     |
@@ -95,7 +92,7 @@ def write_return_bill(kitta_no,customer_name, phone_number, address, return_invo
                             ------------------------------------------------------------------------------------------------
                                                                                             Fined Months:{months_late}
                                                                                             Fine Amount:{fine}
-                                                                                            Total Amount:{total_amount}
+                                                                                            Total Amount:{float(total_amount)}
                                                                                             VAT(13%):{vat_amount}
                                                                                             Total Amount with VAT:{final_amount}
                             ------------------------------------------------------------------------------------------------""")

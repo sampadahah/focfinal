@@ -1,16 +1,16 @@
 from read import read
-from operations import display
+from operations import display,clear
 from rent import find_selected_land
 from write import write_return_bill
 
 def update(returning_land_info):
-    file=open('land.txt', 'r') # Open the file in read mode
-    lines = file.readlines() # Read all the lines
+    file=open('land.txt', 'r') #opening the file in read mode
+    lines = file.readlines() #reading all the lines
 
     #to change the availability status of the rented land
     for i, line in enumerate(lines):     #enumerating to get both index and content of each line in the list
         if line.startswith(returning_land_info[0]):
-            lines[i] = line.replace("Not Available", "Available")   # replacing "Available" with "Not Available" for the user rented land
+            lines[i] = line.replace("Not Available", "Available")   # replacing "Not Available" with "Available" for the user returned land
 
     with open('land.txt', 'w') as file:   # opening the file in write mode
         file.writelines(lines)  # writing the modified lines back to the file
@@ -20,7 +20,7 @@ def update(returning_land_info):
 
 
 def returnLand():
-        return_invoice=[]
+        return_invoice=[]  #creating an empty list to store user returned land information
         while True:
                 customer_name = input("Enter your name: ")
                 address = input("Enter your address: ")
@@ -37,9 +37,9 @@ def returnLand():
         while returning:
                 display() 
                 kitta_no = input("Enter the kitta no. of the land you would like to return: ")
-                returning_land_info=find_selected_land(data,kitta_no)
+                returning_land_info=find_selected_land(data,kitta_no)  #storing the row in returning_land_info variable
 
-                if returning_land_info[-1].strip()=="Not Available":
+                if returning_land_info[-1].strip()=="Not Available":  #checking the last element of the row 
                         while True:
                                 try:
                                         rent_duration=int(input("Enter the period you've rented this land for(in months):"))
@@ -56,27 +56,19 @@ def returnLand():
                                 fine=500*months_late
                                 print(f"Since you've returned this land late you're fined Rs.{fine}")
                                
-                                # kitta_no=returning_land_info[0]
-                                # location=returning_land_info[1] 
-                                # direction=returning_land_info[2]     
-                                # anna=returning_land_info[3]
-                                # price=returning_land_info[4]*rent_duration
-
-                                # return_invoice.append([kitta_no,location,direction,anna,price])
-                               
                         else:
                                 print("Returned the land in time without fine added!")
                         
-                                                       
+                        # extracting information about the returned land from the returning_land_info list and assigning it to individual variables.               
                         kitta_no=returning_land_info[0]
                         location=returning_land_info[1] 
                         direction=returning_land_info[2]     
                         anna=returning_land_info[3]
                         price=int(returning_land_info[4])*rent_duration
 
-                        return_invoice.append([kitta_no,location,direction,anna,price])
+                        return_invoice.append([kitta_no,location,direction,anna,price])  #adding details of the returned land to the list
                         
-                        update(returning_land_info)
+                        update(returning_land_info)   #updating the text file each time the user returns the land
 
                         while True:
                                 choice = input("Do you want to return another land? (Y/N): ").upper()
@@ -85,6 +77,7 @@ def returnLand():
                                 elif choice == "N":
                                         returning=False   #setting 'returning' to false to exit the outer loop
                                         print( f"Your bill has been issued and saved in Returned By {customer_name}.txt. Thank you!")
+                                        clear()
                                         write_return_bill(kitta_no,customer_name, phone_number, address, return_invoice,rent_duration,fine,months_late)
                                         break #exiting the outer loop
 
